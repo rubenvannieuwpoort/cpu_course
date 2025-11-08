@@ -1,0 +1,61 @@
+{
+	"title": "Fetch unit"
+}
+
+# Fetch unit
+
+In the previous lessons we have created a template that I will use as a starting point. First, let's clean it up a bit by removing the example logic from it.
+
+!! be97cf34320e0962e24d922fa293bd166282b53f
+
+In my experience, it is a good idea to structure the project properly from the start; refactoring afterwards can get very tedious. In the previous lesson we established a simplified high-level overview of the architecture of our project.
+
+![Overview of the system-on-chip architecture](01_fetch_unit/overview.svg)
+
+We want to focus on the CPU or *core*, as I'll call it from now on. So, let's create a module for it.
+
+!! 096a320564bd383ceeba9a728871f291b12d5699
+
+And, while we're at it, let's create an (empty) testbench as well.
+
+!! ec8b4ba197aab9cfa2957720b707ce18eeb5bc5d
+
+Now we have a bunch of empty modules and testbenches... I would like to implement something! Since instructions flow through the pipeline stages successively, a natural place to start is, well, the start. In this case, that is the *fetch* stage.
+
+First, we'll make... An empty module and testbench.
+
+!! b61a5dc5463df1a72b1f276f8ddc25f9986f0df9
+
+The *fetch* stage is the stage where the instructions that our CPU will execute are "fetched" from the memory. However, we don't have memory yet... For now, we'll just hardcode a small memory in the form of a vector.
+
+Let's make our "memory" big enough for 16 instructions, so that it's manageable in size but hopefully still large enough to write some small programs. If not, we can always increase the size. For RISC-V, the instructions are 32-bits. We'll initialize with an incrementing number for now, so we can easily distinguish them.
+
+!! 67a0f5754966745acf500ae0b086e46879514388
+
+Now, RISC-V defines a "program counter" or `pc` register, which contains the address of the current instruction. Since addresses are in bytes, and every instruction is 32 bits, or 4 bytes, `pc` needs to be increased by 4 every cycle.
+
+!! 8f99ca6569e3de172d103e72a8c2b68a22f0f48d
+
+Now is probably a good time to run `MODULE=fetch make sim` to see how things work in simulation. Let's have a look at the value of the `pc` register.
+
+**If you're having trouble running the testbench**
+1. Try running `make clean` before running `MODULE=fetch make sim`.
+2. Doublecheck your filenames; running `MODULE=fetch make sim` will add a `_tb` suffix and simulate that, so this command will try to simulate `fetch_tb`.
+
+Let's add the waves for the `pc` register and run for 50 ns. The resulting waveforms should look something like this:
+
+![Image showing the waveforms for the pc register](01_fetch_unit/pc_waveform.png)
+
+Now, we'll actually output the instruction at the address that `pc` holds.
+
+!! 0ecb928e4828bc66f01f29286ce361ca02c19395
+
+Note that this combinatorial logic is not necessarily the best way to do this. We will need to replace it when we start to use block RAMs to implement our memory.
+
+If we simulate for 50 ns and look at the `pc` and `opcode_out` registers, we get the following waveforms:
+
+![Image showing the waveforms for the pc and opcode registers](01_fetch_unit/pc_and_opcode_waveforms.png)
+
+This looks good!
+
+For now, we have an initial implementation of our fetch stage that is hacky but will be sufficient as a basis to start building the other stages.

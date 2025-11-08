@@ -6,7 +6,7 @@ import mistune
 from pathlib import Path
 
 
-markdown = mistune.create_markdown(plugins=[commit_diff('https://github.com/rubenvannieuwpoort/vulture')])
+markdown = mistune.create_markdown(plugins=[commit_diff('cpu')])
 
 @handler()
 class Markdown(Handler):
