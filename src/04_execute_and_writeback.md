@@ -96,4 +96,14 @@ With this change, we see the value of `x1` settles on `2`, after 100 ns.
 
 ![Simulation waveforms](04_execute_and_writeback/simulation3.png)
 
-So, now we can also succesfully execute multiple successive `ADDI` instructions. In the next lesson, we'll look at implementing more instructions.
+So, now we can also execute multiple successive `ADDI` instructions.
+
+While we have only implemented a single instruction, it is worth realizing that implementing more instructions is relatively easy, since most of the "infrastructure" is there. To illustrate this, let's implement the `ADD` instruction, which is similar to `ADDI` but operates on two registers instead of a register and an immediate value.
+
+!! b3fb81a0d12a75588d2bba5f2881a5c9d008dd23
+
+That's it! Many other instructions operate on two operands and write the result to a destination register; these are very easy to implement (although for most of them we do need to implement a new operation in the execute stage).
+
+Instructions that are very different (like memory operations, or control flow operations) will be a bit more work, but even so, it's a lot less than the work we've already done at this point.
+
+In the next lesson we'll look at actually running our design on the Mimas A7 dev board.
