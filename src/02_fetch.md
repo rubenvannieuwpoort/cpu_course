@@ -43,7 +43,7 @@ To test this, let's fill the instruction memory with a counter that starts at on
 
 If we now simulate the `clk`, `pc`, and `output` for 50 ns, we get the following waveforms:
 
-![Simulation waveforms](02_todo/simulation.png)
+![Simulation waveforms](02_fetch/simulation.png)
 
 We can see that:
 1. The value of the opcode lags behind the value of the `pc` register by one cycle.
@@ -63,6 +63,6 @@ We have to set the flag to one whenever we output an opcode.
 
 Now, let's simulate the waveforms again to verify that the issue is fixed:
 
-![Simulation waveforms](02_todo/simulation2.png)
+![Simulation waveforms](02_fetch/simulation2.png)
 
 This looks good; the first time the `is_active` is `1`, the `opcode` field is `00000001`. The `output.opcode` field is still lagging behind `pc` one cycle, but as noted, this is not a problem.

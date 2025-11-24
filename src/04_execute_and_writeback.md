@@ -96,4 +96,4 @@ With this change, we see the value of `x1` settles on `2`, after 100 ns.
 
 ![Simulation waveforms](04_execute_and_writeback/simulation3.png)
 
-So, that we can now also succesfully execute multiple successive `ADDI` instructions. In the next lesson, we'll look at implementing more instructions.
+So, now we can also succesfully execute multiple successive `ADDI` instructions. In the next lesson, we'll look at implementing more instructions.
