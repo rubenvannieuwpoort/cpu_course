@@ -1,10 +1,10 @@
 {
-	"title": "Running our design"
+	"title": "Intermezzo: Running our design"
 }
 
 This lesson starts at commit [0fcfa0cdaf00a57a0f2da39b78b9c2c6cdfab014](https://github.com/rubenvannieuwpoort/course_cpu/commit/0fcfa0cdaf00a57a0f2da39b78b9c2c6cdfab014).
 
-# 5. Running our design
+# 5. Intermezzo: Running our design
 
 Let's take a break from starting at simulation waveforms and try to run our design on the dev board.
 
