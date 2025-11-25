@@ -100,7 +100,7 @@ So, now we can also execute multiple successive `ADDI` instructions.
 
 While we have only implemented a single instruction, it is worth realizing that implementing more instructions is relatively easy, since most of the "infrastructure" is there. To illustrate this, let's implement the `ADD` instruction, which is similar to `ADDI` but operates on two registers instead of a register and an immediate value.
 
-!! b3fb81a0d12a75588d2bba5f2881a5c9d008dd23
+!! 8e8abc09d47b2d77ff47d6d2667d5833f93eecb6
 
 That's it! Many other instructions operate on two operands and write the result to a destination register; these are very easy to implement (although for most of them we do need to implement a new operation in the execute stage).
 
