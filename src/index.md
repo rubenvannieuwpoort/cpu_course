@@ -11,7 +11,8 @@
 3. [Decode stage](/03_decode.html)
 4. [Execute and writeback stage](/04_execute_and_writeback.html)
 5. [Intermezzo: Running our design](/05_running_our_design.html)
-5. [Implementing more instructions](/06_implementing_more_instructions.html)
+6. [Implementing more instructions](/06_implementing_more_instructions.html)
+7. [Control flow instructions](/07_control_flow_instructions.html)
 
 If you have feedback or questions, you are welcome to [send me an email](mailto:ruben@vannieuwpoort.dev).
 
