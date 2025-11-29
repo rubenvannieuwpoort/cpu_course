@@ -6,10 +6,16 @@ from mistune.block_parser import BlockParser
 import subprocess
 from typing import Match
 
-COMMIT_PATTERN = r"^!!(?P<commitsha>.*)$"
+COMMIT_PATTERN = r"^!!(?P<commitmsg>.*)$"
 
+commit_map = {}
 
 def commit_diff(repo: str):
+    global commit_map
+
+    gitlog = subprocess.check_output(["git", "log", "--pretty=oneline", "--reverse"],text=True,cwd=repo)
+    commit_map = { msg: sha for sha, msg in (line.split(" ", 1) for line in gitlog.splitlines()) }
+
     def f(repo, md):
         md.block.register('commit', COMMIT_PATTERN, parse_commit, before='list')
         if md.renderer and md.renderer.NAME == 'html':
@@ -19,8 +25,9 @@ def commit_diff(repo: str):
 
 
 def parse_commit(_: BlockParser, m: Match[str], state: BlockState) -> int:
-    text = m.group('commitsha').strip()
-    state.append_token({"type": "commit", "raw": text})
+    commitmsg = m.group('commitmsg').strip()
+    commitsha = commit_map[commitmsg]
+    state.append_token({"type": "commit", "raw": commitsha})
     return m.end() + 1
 
 

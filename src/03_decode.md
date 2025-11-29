@@ -40,31 +40,31 @@ With that out of the way... Let's start coding.
 
 We want the decoder only to try to decode when the `is_active` flag is set.
 
-!! c921175f13845a07e02bd2b72bc4075cc1d64acf
+!!Only try to decode when is_active is set
 
 Let's start with recognizing the `ADDI` instruction by checking the values of the `funct3`, and `opcode` fields. Since many other opcodes use the same fields, I'll add variables for them, so that they can be re-used.
 
-!! 4fb8f17716af95532d4d1abf4d12a1587407141d
+!!Recognize ADDI instruction
 
 Now, if we recognize the `ADDI` instruction, we want to set the control signals, so we need to define some types and constants for them in the output type.
 
-!! b06e86890619a5b0e3bd50fb37fc2d081e6ef300
+!!Define types and constants for control signals
 
 We'll define an enumeration type for the operation that the execute stage has to perform. For now, it will know a single operation, `OP_ADD`. We don't really need a "no operation" (NOP) value, the execute stage can just add the operands and not use the result, and it will be functionally the same as executing a NOP.
 
-!! 2591ac193af829e317ee26a1731a2ed1590977d6
+!!Add field and enum type for operation
 
 Now, we can finally set the output.
 
-!! cc5be9922a3176257e91e700d0244b21c49414a2
+!!Set decode output for ADDI
 
 Hmm, we still need to load values from registers. Normally you'd do this in a dedicated *register file*, but I will just define the registers here in the decode stage. If this will lead to any problems later on, we'll just deal with them at that point.
 
-!! 8fb08384099f555a444bbf7b55ac524e3ce2aaa3
+!!Add registers in decode stage
 
 Now, we can actually read the value from the registers when we set the output.
 
-!! 97b68a5188c4a7e216561b3fa238d2e0b618a460
+!!Load register value for first operand for ADDI
 
 At this point the simulation is working, but does nothing. We'd like to execute the `ADDI` instruction. It's a good exercise to try to write the instruction bits of a simple `ADDI` instruction by hand. Let's do `ADDI x1, x2, 123`.
 
@@ -81,7 +81,7 @@ Indeed, if I enter `addi x1, x0, 123` in [this online RISC-V assembler](https://
 
 Now, we replace the first opcode by this value for testing.
 
-!! 1f04817d7054b1d6cd6564f7f069e3e82d641f81
+!!Add ADDI instruction in instruction memory for testing
 
 Now, we run the simulation for 50 ns and observe the inputs and outputs of the decode stage to verify everything is working as expected.
 
@@ -93,11 +93,11 @@ The cycle after that, we expect the output of the decode stage to be the same as
 
 So, we need to handle the case where no instruction is recognized in the decoder. In this case, I want to set the output to the default output. I also want to have an `is_active` flag like we have in the output of the fetch stage.
 
-!! 2f1e682181dfe848ccded6b020f617105ccd36df
+!!Add is_active flag to decode output
 
 Another problem is that we can't distinguish between "there was no instruction" and "the instruction could not be decoded". For this, I'd also like a flag to indicate when the decoder failed to decode an instruction. In this case, we'll interpret the instruction as an invalid instruction. Of course, until we have implemented decoding for all the RISC-V instructions, the instructions for which an implementation is missing will get tagged as invalid.
 
-!! d20e09da83bc7dac0d753d0a4db9a9ce99c50327
+!!Add is_invalid flag to decode output
 
 I refactored the code slightly to use a variable, so that we can use `DEFAULT_DECODE_OUTPUT` by default and can overwrite individual fields of the output. This is not allowed for signals.
 

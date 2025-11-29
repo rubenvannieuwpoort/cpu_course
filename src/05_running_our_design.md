@@ -12,29 +12,29 @@ It would be nice to somehow see the result of our computations, so let's add a c
 
 Until now, we have only run our core in simulation. The "main" or "top level" module that will be used on the FPGA is `top_level.vhd`. It was already there in the template, we have just never used it. It already has outputs for the LEDs on the dev board. So, first, let's instantiate our core in the top level module.
 
-!! fd8bd0e4809d702391864e5dcd2ed1fb882ad80f
+!!Instantiate core in top_level module
 
 To be able to set the LEDs we need to make an output for them in our core.
 
-!! c01c79c56e152ec1587fcf21b86a3ed93695f6c3
+!!Make led output in core
 
 We want to set it from the execute stage.
 
-!! 98a1de631abe97dd3ebfa171245ea20c1703b9b7
+!!Add led output to execute stage
 
 Now, let's add an operation for setting the LED.
 
-!! 19deb063b57b992c5ba75340e09a8e9c7c7881e7
+!!Add LED operation
 
 Now, we can add our custom instruction. I'll use the `opcode` field and check if it's all ones.
 
-!! 2bb26ad72ff3f4c33dc571516b88a4e3203dd10c
+!!Implement LED instruction
 
 I also want to implement an instruction that makes our CPU hang. If we don't stop it, our CPU will keep executing the same 16 instructions over and over again, and it will be impossible to observe the LEDs when they keep changing thousands of times per second.
 
 Currently, the fetch stage only fetches new instructions when an instruction is done, which is detected by observing the `is_active` flag. So, we can simply add an instruction that does not set `is_active`, and the fetch stage will stop, halting the entire pipeline.
 
-!! b1b1acd0d86bb54bd072611e0f1e97fa96ebe71d
+!!Add HANG instruction
 
 I've dubbed this custom instruction `HANG`.
 
@@ -48,7 +48,7 @@ We have to assemble our custom instructions by hand. `LED x2` assembles to `0001
 
 Now, we put this into our instruction memory.
 
-!! 52ad976f12300a37998296b9861bfa7bccabac4a
+!!Implement program for calculating the 13th Fibonacci number
 
 If we run this with
 ```

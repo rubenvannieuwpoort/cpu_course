@@ -17,29 +17,29 @@ First, we'll declare a type `instruction_memory_t` for holding the instructions.
 
 For now, I'll just fill the instruction memory with zero bits.
 
-!! f11d0f0e2dfd93c74721875d1c5dd9a703b4de46
+!!Add initial implementation of instruction memory
 
 Now, we'll also want a signal to keep track of number (or *address*) of the current instruction. This is typically called the *program counter* and abbreviated to "PC". I'll make our program counter of type `unsigned` so that we can increase it without having to do too many casts. In RISC-V, the program counter is 32 bits wide, so I'll use 32 bits as well.
 
-!! 99f055d1b6d18591106c8ed1dba11b7f2c3b66e6
+!!Add program counter
 
 Now, we'll want to increase the program counter to point to the next instruction after passing the instruction at the current program counter to the next stage. Now, the program counter is a byte address, and since our instructions are 32 bits wide, we need to increase the program counter by 4 every cycle. For now we'll just assume we can output an instruction every cycle.
 
-!! 3627010caa58a9793c0077fbacaa483c29882663
+!!Increase program counter
 
 So far so good. After simulating this we can see it works as expected.
 
 Now, we'll also want to fetch the instruction (or *opcode*) at the address that the program counter points to, and pass it to the next stage. So, let's add an output for it.
 
-!! 48f8829c59969fb47b5ef1ca97f02a754de443a0
+!!Add opcode output to fetch stage
 
 Let's actually fetch the opcode from the instruction memory and set it in the output.
 
-!! 573cb9ee0113a4a88f002767281507b4dee8eec5
+!!Fetch opcode from memory
 
 To test this, let's fill the instruction memory with a counter that starts at one (to be able to distinguish between an "empty" opcode and the first opcode).
 
-!! e76c242e8910fd9a1ff9105a19f3454787780da6
+!!Fill instruction memory with counting patterns
 
 If we now simulate the `clk`, `pc`, and `output` for 50 ns, we get the following waveforms:
 
@@ -55,11 +55,11 @@ The issue of different values being out of sync is not a real problem, but can b
 
 The second point is actually a problem, and we'll address it by adding an `is_active` flag in the output of the fetch stage and setting it to zero in the default value. If this flag is zero, the output is empty and should be ignored by other stages. We'll have to add similar flags to the output of the other stages later.
 
-!! 6a5516179942fd8edeb590ebf640f4d40e9b019d
+!!Add is_active flag in fetch output
 
 We have to set the flag to one whenever we output an opcode.
 
-!! 795a0822522cbd280e9a7a6c1fb669344b6dd048
+!!Set is_active flag to one when outputting opcode
 
 Now, let's simulate the waveforms again to verify that the issue is fixed:
 
