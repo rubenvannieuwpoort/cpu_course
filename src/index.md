@@ -13,6 +13,7 @@
 5. [Intermezzo: Running our design](/05_running_our_design.html)
 6. [Implementing more instructions](/06_implementing_more_instructions.html)
 7. [Control flow instructions](/07_control_flow_instructions.html)
+7. [Memory](/08_memory.html)
 
 If you have feedback or questions, you are welcome to [send me an email](mailto:ruben@vannieuwpoort.dev).
 
