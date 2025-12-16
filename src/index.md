@@ -13,7 +13,10 @@
 5. [Intermezzo: Running our design](/05_running_our_design.html)
 6. [Implementing more instructions](/06_implementing_more_instructions.html)
 7. [Control flow instructions](/07_control_flow_instructions.html)
-7. [Memory](/08_memory.html)
+8. [Memory](/08_memory.html)
+9. [Reading instructions from main memory](/09_reading_instructions_from_main_memory.html)
+10. [Setting up a toolchain](/10_setting_up_a_toolchain.html)
+11. [Control and status registers](/11_control_and_status_registers.html)
 
 If you have feedback or questions, you are welcome to [send me an email](mailto:ruben@vannieuwpoort.dev).
 
