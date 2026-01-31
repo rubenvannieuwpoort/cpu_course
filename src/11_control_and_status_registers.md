@@ -118,7 +118,7 @@ The `mvendorid`, `marchid`, `mimpid`, `mhartid`, and `mconfigptr` CSRs can legal
 
 !!Implement mvendorid, marchid, mimpid, mhartid, and mconfigptr
 
-Now, on to `mstatus`. This is a complicated CSR, but for a minimal implementation we only need the `mie` and `mpie` bits as read-write; the rest can be read-only zero.
+Now, on to `mstatus`. This is a complicated CSR, but for a minimal implementation we only need the `mie` and `mpie` bits as read-write; most other bits/fields can be read-only zero. The only exception is `mpp`, which holds the previous privilige mode. Since our implementation only has the "machine" privilege mode, which corresponds to `11`, so we hardcode `mpp` to `11`.
 
 !!Implement mstatus
 
@@ -138,7 +138,7 @@ The `mtvec` CSR has to do with the address of the interrupts handler. The lower 
 
 !!Implement mtvec
 
-The `mstatush` is a lot like `mstatus` and everything except the `mdt` bit is read-only for our implementation.
+For our implementation, the `mstatush` register can be read-only zero.
 
 !!Implement mstatush
 
@@ -185,3 +185,11 @@ The `mphmcounter`s also have variants that hold the higher bits.
 Finally, we have `mhpmevent` and `mhpmeventh` counters, which can be read-only zero.
 
 !!Implement mhpmevent and mhpmeventh
+
+Now, we have defined most CSRs that need to exist. Most of them are either read-only registers, or have to do with interrupts, and we'll look at them later. Exceptions are `mcycle` (and `mcycleh`) and `minstret` (and `minstreth`). These are incrementing counters, but we need to overwrite them when writing to them. This is most easily implemented by using variables.
+
+!!Actually count cycles in mcycle
+
+For `minstret` and `minstreth` the approach is similar, but we need to know when an instruction retires. I implement this by connecting the `pipeline_ready` signal from the writeback stage to the execute stage, and only incrementing the retired instruction count when this signal is high.
+
+!!Count retired instructions in minstret
